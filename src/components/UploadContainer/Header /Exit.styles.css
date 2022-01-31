@@ -1,0 +1,10 @@
+.exit-icon {
+  color: rgb(107, 106, 106);
+  font-size: 24px;
+  margin: 15px 15px 0 0;
+}
+
+.exit-icon:hover {
+  cursor: pointer;
+  color: rgb(128, 128, 128);
+}

@@ -1,0 +1,51 @@
+.web-cam {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.web-cam-img {
+  position: absolute;
+  bottom: 90px;
+}
+
+.webcam-btn {
+  padding: 10px 20px;
+  margin-top: 530px;
+  margin-left: 630px;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: Arial;
+  font-weight: bold;
+  background-color: #ff620c;
+  color: white;
+  border: none;
+  border-radius: 3px;
+}
+
+.capture {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: Arial;
+  font-weight: bold;
+}
+
+.captured-img {
+  position: absolute;
+  bottom: "75px";
+  border: 1px #ff620c solid;
+}
+
+.camera-btn {
+  margin-top: 530px;
+  margin-left: 580px;
+}
