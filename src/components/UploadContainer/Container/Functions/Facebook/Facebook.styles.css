@@ -30,6 +30,14 @@
   cursor: pointer;
 }
 
+.image-selected {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  overflow: hidden;
+  cursor: pointer;
+}
+
 .photo-bar {
   background-color: white;
   width: 767px;

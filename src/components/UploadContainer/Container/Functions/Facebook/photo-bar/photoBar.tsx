@@ -1,6 +1,6 @@
 import React from "react";
 import { BiLogOut, BiArrowBack } from "react-icons/bi";
-// import { useHistory } from "react-router-dom";
+import { usePrevious } from "../../../../usePrevious";
 
 interface PhotosBarProps {
   photos?: any;
@@ -8,7 +8,9 @@ interface PhotosBarProps {
   handleAlbumPhotos?: any;
   handleUploadedPhotos?: any;
   display?: string;
+  setDisplay?: any;
   photosInAlbum?: any;
+  setLogin?: any;
 }
 
 export const PhotoBar: React.FC<PhotosBarProps> = ({
@@ -16,10 +18,16 @@ export const PhotoBar: React.FC<PhotosBarProps> = ({
   handleAlbumPhotos,
   handleUploadedPhotos,
   display,
+  setDisplay,
   photosInAlbum,
+  setLogin,
 }) => {
   const albumName = photosInAlbum.name;
-//   const history = useHistory();
+
+  const prevValue = usePrevious(display);
+  const handleBackArrow = () => {
+    setDisplay(prevValue);
+  };
 
   return (
     <div>
@@ -39,7 +47,7 @@ export const PhotoBar: React.FC<PhotosBarProps> = ({
                   paddingRight: "10px",
                   color: "#888888",
                 }}
-                // onClick={() => history.goBack()}
+                onClick={handleBackArrow}
               />
             </li>
             <li className="photo-bar-icon">{albumName}</li>
@@ -64,8 +72,32 @@ export const PhotoBar: React.FC<PhotosBarProps> = ({
                   color: "#888888",
                   paddingTop: "8px",
                 }}
+                onClick={() => setLogin(false)}
               />
             </li>
+          </ul>
+        </div>
+      )}
+      {display === "noResults" && (
+        <div className="photo-bar">
+          <ul
+            className="photo-folder"
+            style={{
+              justifyContent: "flex-start",
+              paddingLeft: "22px",
+            }}
+          >
+            <li className="photo-bar-icon">
+              <BiArrowBack
+                style={{
+                  fontSize: "22px",
+                  paddingRight: "10px",
+                  color: "#888888",
+                }}
+                onClick={handleBackArrow}
+              />
+            </li>
+            <li className="photo-bar-icon">{albumName}</li>
           </ul>
         </div>
       )}
