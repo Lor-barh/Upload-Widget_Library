@@ -18,7 +18,6 @@ export const MyFile: React.FC<FileProps> = () => {
   };
 
   const uploadImage = () => {
-    console.log("print");
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "mjvep4sg");

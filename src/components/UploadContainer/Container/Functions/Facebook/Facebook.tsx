@@ -7,43 +7,64 @@ import { PhotoBar } from "./photo-bar/photoBar";
 import { AlbumPhotos } from "./AlbumPhoto/album-photos";
 import { AllPhotos } from "./AllPhotos/all-photos";
 import { AllPhotosInAlbum } from "./AllPhotosInAlbum/allPhotosInAlbum";
+import { NoData } from "../../../noData";
+import axios from "axios";
 
 export const Facebook = () => {
   const [login, setLogin] = useState<boolean>(false);
   const [albums, setAlbums] = useState([]);
-  const [picture, setPicture] = useState<string>("");
+  const [facebookPicture, setFacebookPicture] = useState<string>("");
   const [photos, setPhotos] = useState<any>([]);
   const [display, setDisplay] = useState<string>("allPhotos");
   const [allPhoto, setAllPhoto] = useState<any>([]);
   const [PhotosInAlbum, setPhotosInAlbum] = useState<any>({});
+
+  const uploadImage = () => {
+    const formData = new FormData();
+    formData.append("file", facebookPicture);
+    formData.append("upload_preset", "mjvep4sg");
+    console.log("myFile", facebookPicture);
+    axios
+      .post(
+        "https://api.cloudinary.com/v1_1/safari-webstore/image/upload",
+        formData
+      )
+      .then((response) => {
+        console.log(response);
+      });
+
+    setLogin(false);
+  };
 
   const responseFacebook = (response: any) => {
     console.log(response);
     setLogin(true);
 
     //Fetch Album
-    // setAlbums(response.albums.data.map((album: any) => album.picture.data.url));
-
     setAlbums(response.albums.data.map((album: any) => album));
-
-    // console.log(
-    //   "albums",
-    //   response.albums.data.map((album: any) => album)
-    // );
 
     //Fetch Tagged Photos
     setPhotos(response.photos.data.map((photo: any) => photo.picture));
 
     // Fetch Your Photos
-    const uploaded = response.albums.data.map((album: any) => album.photos);
+    let uploaded;
+
+    const albumResponse = response.albums.data;
+    const albumCounts = response.albums.data.map((alb: any) => alb.count);
+
     var uploadedPicturesData: any = [];
 
-    for (var i = 0; i < uploaded.length; i++) {
-      uploaded[i].data.map((uploadedpicture: any) =>
-        uploadedPicturesData.push(uploadedpicture.picture)
-      );
-      setAllPhoto(uploadedPicturesData);
+    for (var i = 0; i < albumResponse.length; i++) {
+      if (albumCounts[i] !== 0) {
+        uploaded = response.albums.data.map((album: any) => album.photos);
+        uploaded[i].data.map((uploadedpicture: any) =>
+          uploadedPicturesData.push(uploadedpicture.picture)
+        );
+      } else {
+        continue;
+      }
     }
+    setAllPhoto(uploadedPicturesData);
   };
 
   const handlePhotosOfYou = () => {
@@ -57,6 +78,10 @@ export const Facebook = () => {
   const handleUploadedPhotos = () => {
     setDisplay("allPhotos");
   };
+
+  // const handleSelectPicture = (e: any) => {
+  //   setPicture("selected")
+  // }
 
   return (
     <div>
@@ -95,13 +120,22 @@ export const Facebook = () => {
             handleAlbumPhotos={handleAlbumPhotos}
             handleUploadedPhotos={handleUploadedPhotos}
             display={display}
+            setDisplay={setDisplay}
             photosInAlbum={PhotosInAlbum}
+            setLogin={setLogin}
           />
-          {display === "allPhotos" && <AllPhotos uploadedPhotos={allPhoto} />}
+          {display === "allPhotos" && (
+            <AllPhotos
+              uploadedPhotos={allPhoto}
+              setPicture={setFacebookPicture}
+              uploadImage={uploadImage}
+            />
+          )}
           {display === "taggedPhotos" && (
             <PhotosOfYou
               photos={photos}
-              key={photos.map((keyPhoto: any) => keyPhoto.index)}
+              setPicture={setFacebookPicture}
+              uploadImage={uploadImage}
             />
           )}
           {display === "albumPhotos" && (
@@ -113,8 +147,14 @@ export const Facebook = () => {
           )}
 
           {display === "allPhotosInAlbum" && (
-            <AllPhotosInAlbum photosInAlbum={PhotosInAlbum} />
+            <AllPhotosInAlbum
+              photosInAlbum={PhotosInAlbum}
+              setPicture={setFacebookPicture}
+              uploadImage={uploadImage}
+            />
           )}
+
+          {display === "noResults" && <NoData />}
         </InnerContainer>
       )}
     </div>

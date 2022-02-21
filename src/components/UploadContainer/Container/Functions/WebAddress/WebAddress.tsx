@@ -23,10 +23,10 @@ export const WebAddress: React.FC<WebAddressProps> = () => {
   };
 
   const uploadImage = () => {
-    console.log("print");
     const formData = new FormData();
     formData.append("file", address);
     formData.append("upload_preset", "mjvep4sg");
+    console.log("myFile", address);
     axios
       .post(
         "https://api.cloudinary.com/v1_1/safari-webstore/image/upload",
