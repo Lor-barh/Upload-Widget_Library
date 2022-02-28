@@ -1,0 +1,21 @@
+.border {
+  border: 4px rgb(180, 180, 180) dotted;
+  width: 733px;
+  height: 430px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: rgba(130, 139, 158, 0.5);
+  font-size: 20px;
+}
+
+.cloud-upload {
+  font-size: 100px;
+}
+
+.or {
+  color: black;
+  margin-bottom: 20px;
+  display: inline-block;
+}
